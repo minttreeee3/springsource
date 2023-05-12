@@ -20,10 +20,10 @@ public class BookMain {
 		
 		
 		// 도서 추가
-//		BookDTO insertDto = new BookDTO(1006, "모두의 알고리즘", "이승찬", 70000, "신간이다");
-//		if(service.insertBook(insertDto)) {
-//			System.out.println("입력성공");
-//		}
+		BookDTO insertDto = new BookDTO(1007, "zz 알고리즘", "이승찬", 50000, "신간이다");
+		if(service.insertBook(insertDto)) {
+			System.out.println("입력성공");
+		}
 		
 		
 		// 도서 수정
