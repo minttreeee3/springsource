@@ -4,7 +4,7 @@
 
 	<h1>도서 정보 수정</h1>
 	
-<form action='<c:url value="/update.do" />' method="post">
+<form action='<c:url value="/book/modify" />' method="post">
   <div class="mb-3">
     <label for="code" class="form-label">code</label>
     <input type="text" class="form-control" id="code" name="code" value="${dto.code}" readonly>

@@ -24,14 +24,12 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public boolean delete(int code) {
-		// TODO Auto-generated method stub
-		return false;
+		return mapper.delete(code)==1?true:false;
 	}
 
 	@Override
 	public boolean update(BookDTO dto) {
-		// TODO Auto-generated method stub
-		return false;
+		return mapper.update(dto)==1?true:false;
 	}
 
 	@Override
@@ -46,8 +44,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<BookDTO> getSearchList(String criteria, String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.search(criteria, keyword);
 	}
 
 }
