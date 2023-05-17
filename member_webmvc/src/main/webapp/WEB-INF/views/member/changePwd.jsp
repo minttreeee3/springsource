@@ -4,22 +4,22 @@
 	<h1>비밀번호 변경</h1>
 	
 <main class="form-signin w-100 m-auto">
-  	<form method="post" action='<c:url value="/change.do" />'>
+  	<form method="post" action='<c:url value="/member/changePwd" />'>
 
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingInput" name="userid" value="${loginDto.userid}" readonly>
+      <input type="text" class="form-control" id="floatingInput" name="userid" value="${authDTO.userid}" readonly>
       <label for="floatingInput">아이디</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword1" placeholder="기존비밀번호" name="current-password">
+      <input type="password" class="form-control" id="floatingPassword1" placeholder="기존비밀번호" name="currentPassword">
       <label for="floatingPassword1">기존비밀번호</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword2" placeholder="새 비밀번호" name="new-password">
+      <input type="password" class="form-control" id="floatingPassword2" placeholder="새 비밀번호" name="newPassword">
       <label for="floatingPassword2">새 비밀번호</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword3" placeholder="새 비밀번호 확인" name="confirm-password">
+      <input type="password" class="form-control" id="floatingPassword3" placeholder="새 비밀번호 확인" name="confirmPassword">
       <label for="floatingPassword3">새 비밀번호 확인</label>
     </div>
 

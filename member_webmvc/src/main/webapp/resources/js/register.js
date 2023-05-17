@@ -56,7 +56,7 @@
 	 // 사용자가 입력한 userid 가져오기
 	 const userid = document.querySelector("#userid").value;
 	 
-	 fetch("dupId.do", {
+	 fetch("/member/dupId", {
 		 method:"post",
 		 body: new URLSearchParams({userid:userid})
 	 })

@@ -32,8 +32,6 @@
 	<mybatis-spring:scan base-package="com.spring.mapper"/>
 	
 	
-	<!-- 비밀번호 암호화 객체 생성 -->
-	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 			
 </beans>
