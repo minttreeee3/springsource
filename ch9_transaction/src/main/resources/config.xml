@@ -31,7 +31,7 @@
 	<mybatis-spring:scan base-package="com.spring.mapper"/>
 	
 	<!-- 스프링 트랜잭션 매니저 등록 -->
-	<bean id="transactionManager" class="org.springFramework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="ds" />
 	</bean>
 	

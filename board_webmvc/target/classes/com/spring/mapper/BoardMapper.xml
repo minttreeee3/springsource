@@ -11,8 +11,8 @@
 	<select id="list" resultType="com.spring.domain.BoardDTO">
 		<!-- >,<를 부등호의 의미로 쓰려면 CDATA 안에다가 써야함 (아니면 꺽쇠로 인식함) -->
 		<![CDATA[
-			select bno, title, writer, regdate, updatedate 
-			from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate 
+			select bno, title, writer, regdate, updatedate, replycnt 
+			from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate, replycnt 
 			    from spring_board 
 			    where 
 		]]>	
@@ -33,6 +33,12 @@
 		bno >0
 	</select>
 	
+	
+	<!-- 댓글 수 추가 -->
+	<update id="updateReplyCnt">
+		update spring_board set replycnt = replycnt + #{amount}
+		where bno=#{bno}	
+	</update>
 	
 	<!-- 동적 쿼리문 
 		/board/list?page=1&amount=10&type=W&keyword=홍길동 		요청

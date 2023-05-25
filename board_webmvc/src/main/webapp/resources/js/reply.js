@@ -43,10 +43,11 @@ let replyService = (function () {
         return response.json();
       })
       .then((data) => {
+        console.log("데이터");
         console.log(data);
         //data가 도착해서 함수가 호출되면 넘겨받은 함수를 호출
         if (callback) {
-          callback(data);
+          callback(data.replyCnt, data.list);
         }
       })
       .catch((error) => console.log(error));
@@ -106,10 +107,55 @@ let replyService = (function () {
       .catch((error) => console.log(error));
   }
 
+  function update(reply, callback) {
+    fetch("/replies/" + reply.rno, {
+      method: "put",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(reply),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("수정 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        if (callback) {
+          callback(data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+
+  function remove(rno, callback) {
+    fetch("/replies/" + rno, {
+      method: "delete",
+      //넘어오는 데이터가 없으므로 headers~는 안써도됨
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("삭제 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        if (callback) {
+          callback(data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+
+  // 외부에서 접근 가능한 함수 지정
+  // 이걸 써야만 외부에서 호출이 가능해짐
   return {
     add: add,
     getList: getList,
     displayTime: displayTime,
     get: get,
+    update: update,
+    remove: remove,
   };
 })();
