@@ -1,41 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
-
+<!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800">Board List</h1>                        
+    <h1 class="h3 mb-0 text-gray-800">Board Register</h1>   
 </div>
-
 <div class="row">
 	<div class="col">
 		<form action="" method="post" id="registerForm" novalidate>
 		  <div class="form-group">
 		    <label for="title">Title</label>
-		    <input type="text" class="form-control" id="title" placeholder="title" name="title" required>
-		    <div class="invalid-feedback">
-		    	제목을 확인해 주세요
-		    </div>
-		  </div>		  
+		    <input type="text" class="form-control" id="title" placeholder="title" name="title" required>		  	
+		  	<div class="invalid-feedback">
+		  		제목을 확인해 주세요
+		  	</div>
+		  </div>		 	  
 		  <div class="form-group">
 		    <label for="content">Content</label>
-		    <textarea class="form-control" id="content" rows="10" placeholder="content" name="content" required></textarea>
-		    <div class="invalid-feedback">
-		    	내용을 확인해 주세요
-		    </div>
+		    <textarea class="form-control" id="content" rows="10" name="content" placeholder="content" required></textarea>		  
+		  	<div class="invalid-feedback">
+		  		내용을 확인해 주세요
+		  	</div>
 		  </div>
 		  <div class="form-group">
 		    <label for="writer">Writer</label>
-		    <input type="text" class="form-control" id="writer" placeholder="writer" name="writer" required>
-		    <div class="invalid-feedback">
-		    	작성자를 확인해 주세요
-		    </div>
-		  </div>
+		    <input type="text" class="form-control" id="writer" placeholder="writer" name="writer" required>		  	
+		  	<div class="invalid-feedback">
+		  		작성자를 확인해 주세요
+		  	</div>
+		  </div>	
 		  <button type="submit" class="btn btn-primary">등록</button>
 		  <button type="reset" class="btn btn-secondary">취소</button>
 		</form>
 	</div>
 </div>
-<div class="row_mt-3">
+<div class="row mt-3">
 	<div class="col">
 		<div class="card">
 			<div class="card-header">
@@ -44,7 +43,7 @@
 			</div>
 			<div class="card-body">
 				<div class="form-group uploadDiv">
-					<input type="file" name="uploadFile" id="uploadFile" multiple />
+					<input type="file" name="uploadFile" id="uploadFile"  multiple/>
 				</div>
 				<div class="uploadResult">
 					<ul></ul>
@@ -53,6 +52,20 @@
 		</div>
 	</div>
 </div>
-<script src='<c:url value="/resources/js/register.js" />'></script>    
-<script src='<c:url value="/resources/js/upload.js" />'></script>    
-<%@ include file="../include/footer.jsp" %>
+<script src="/resources/js/register.js"></script>
+<script src="/resources/js/upload.js"></script>
+<%@ include file="../include/footer.jsp" %>-
+
+
+
+
+
+
+
+
+
+
+
+
+
+

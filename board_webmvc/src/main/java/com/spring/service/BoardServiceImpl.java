@@ -30,16 +30,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean insert(BoardDTO dto) {
 		// board 테이블 + attach 테이블 등록
-		boolean insertFlag = mapper.insert(dto)==1? true:false;
+		boolean insertFlag = mapper.insert(dto)==1?true:false;
 		
-		// 첨부파일 여부를 확인
+		// 첨부파일 여부 확인
 		if(dto.getAttachList() == null || dto.getAttachList().size() == 0) {
 			return insertFlag;
 		}
+		
 		dto.getAttachList().forEach(attach -> {
 			attach.setBno(dto.getBno());
-			attachMapper.insert(attach);
+			attachMapper.insert(attach); 
 		});
+		
 		return insertFlag;
 	}
 
