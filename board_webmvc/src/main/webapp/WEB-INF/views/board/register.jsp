@@ -35,6 +35,24 @@
 		</form>
 	</div>
 </div>
-
+<div class="row_mt-3">
+	<div class="col">
+		<div class="card">
+			<div class="card-header">
+				<i class="fa fa-file"></i>
+				파일첨부
+			</div>
+			<div class="card-body">
+				<div class="form-group uploadDiv">
+					<input type="file" name="uploadFile" id="uploadFile" multiple />
+				</div>
+				<div class="uploadResult">
+					<ul></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src='<c:url value="/resources/js/register.js" />'></script>    
+<script src='<c:url value="/resources/js/upload.js" />'></script>    
 <%@ include file="../include/footer.jsp" %>

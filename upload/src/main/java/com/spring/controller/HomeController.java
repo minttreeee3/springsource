@@ -62,7 +62,7 @@ public class HomeController {
 //		logger.info("file Name "+dto.getFile().getContentType());
 //		logger.info("file Name "+dto.getFile().getSize());
 //		
-//		String uploadPath = "D:\\eclipse\\upload";
+//		String uploadPath = "c:\\upload";
 //		File saveFile = new File(uploadPath, dto.getFile().getOriginalFilename());
 //		
 //		
@@ -83,7 +83,7 @@ public class HomeController {
 		public void uploadPost(FileDTO dto) {
 			logger.info("upload 요청 "+dto);
 			
-			String uploadPath = "D:\\eclipse\\upload";
+			String uploadPath = "c:\\upload";
 			
 			for(MultipartFile multipartFile : dto.getFile()) {
 				logger.info("file Name "+multipartFile.getOriginalFilename());

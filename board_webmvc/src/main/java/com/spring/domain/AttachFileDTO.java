@@ -1,7 +1,6 @@
 package com.spring.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +10,12 @@ import lombok.ToString;
 
 @Setter @Getter @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class BoardDTO {
+public class AttachFileDTO {
+	private String uuid;
+	private String uploadPath;
+	private String fileName;
+	private boolean fileType;
 	private int bno;
-	private String title;
-	private String content;
-	private String writer;
-	private Date regDate;
-	private Date updateDate;
-	private int replyCnt;
 	
-	//첨부파일 정보
-	private List<AttachFileDTO> attachList;
+
 }

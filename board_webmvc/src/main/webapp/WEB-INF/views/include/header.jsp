@@ -29,6 +29,13 @@
     <script src="/resources/vendor/jquery/jquery.min.js"></script>
     <script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
+    <!-- lightbox -->
+    <link rel="stylesheet" href="/resources/css/lightbox/lightbox.min.css" />
+    <script src="/resources/js/lightbox/lightbox.min.js"></script>
+    
+    <!-- upload css -->
+    <link rel="stylesheet" href="/resources/css/upload.css" />
+    
 </head>
 
 <body id="page-top">

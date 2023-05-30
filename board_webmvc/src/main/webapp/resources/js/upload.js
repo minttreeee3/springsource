@@ -3,7 +3,7 @@
  */
 
 // uploadAjaxPost
-document.querySelector("#uploadBtn").addEventListener("click", () => {
+document.querySelector("#uploadFile").addEventListener("change", () => {
   //FormData 객체 생성
   const formData = new FormData();
 
@@ -41,41 +41,41 @@ function showUploadedFile(uploadResultArr) {
     //fileType 이 true 라면 image 파일이라면 썸네일 이미지 보여주기
     if (item.fileType) {
       //썸네일 이미지 경로 생성
-      let fileCallPath = encodeURIComponent(
-        item.uploadPath + "\\s_" + item.uuid + "_" + item.fileName
-      );
+      let fileCallPath = encodeURIComponent(item.uploadPath + "\\s_" + item.uuid + "_" + item.fileName);
 
       // str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>";
 
       // 썸네일 이미지 클릭 ==> 원본 이미지 보여주기
-      let oriFileCallPath = encodeURIComponent(
-        item.uploadPath + "\\" + item.uuid + "_" + item.fileName
-      );
+      let oriFileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
 
-      str += "<li>";
+      str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
+      str += " data-filename='" + item.fileName + "' data-type='" + item.fileType + "' >";
       str += "<a href='/display?fileName=" + oriFileCallPath + "' data-lightbox='image'>";
+      str += "<div class='text-center'><img src='/display?fileName=" + fileCallPath + "'></a></div>";
+      str += "<small>" + item.fileName + "</small> ";
       str +=
-        "<div class='text-center'><img src='/display?fileName=" + fileCallPath + "'></a></div>";
-      str += "<small>" + item.fileName + "</small>";
-      str += "<span data-file='" + fileCallPath + "' data-type='image'> X </span>";
+        "<button type='button' class='btn btn-sm btn-circle btn-warning' data-file='" + fileCallPath + "' data-type='image'> X </button>";
       str += "</li>";
     } else {
       // txt파일이라면
       // str += "<li>" + item.fileName + "</li>";
 
       // txt 파일 경로 생성
-      let fileCallPath = encodeURIComponent(
-        item.uploadPath + "\\" + item.uuid + "_" + item.fileName
-      );
+      let fileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
 
-      str += "<li>";
+      str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
+      str += " data-filename='" + item.fileName + "' data-type='" + item.fileType + "' >";
       str += "<a href='/download?fileName=" + fileCallPath + "'>";
       str += "<div class='text-center'><img src='/resources/img/txt-file.png'></div>";
-      str += "<small>" + item.fileName + "</small></a>";
-      str += "<span data-file='" + fileCallPath + "' data-type='file'> X </span>";
+      str += "<small>" + item.fileName + "</small></a> ";
+      str +=
+        "<button type='button' class='btn btn-sm btn-circle btn-warning' data-file='" + fileCallPath + "' data-type='file'> X </button>";
       str += "</li>";
     }
   });
+
+  console.log("파일첨부 ", str);
+
   document.querySelector(".uploadResult ul").insertAdjacentHTML("beforeend", str);
 }
 
@@ -98,7 +98,6 @@ document.querySelector(".uploadResult").addEventListener("click", (e) => {
 
   // x가 눌러진 li 가져오기
   const li = e.target.closest("li");
-  
 
   // script에서 <form>태그 작성
   const formData = new FormData();
