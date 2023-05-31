@@ -1,5 +1,6 @@
 /**
  *
+ *
  */
 
 checkModal(result);
@@ -11,43 +12,41 @@ function checkModal(result) {
 
   if (parseInt(result) > 0) {
     document.querySelector(".modal-body").innerHTML =
-      "게시글" + result + "번이 등록되었습니다.";
+      "게시글 " + result + " 번이 등록되었습니다.";
   } else {
-    document.querySelector(".modal-title").innerHTML = "게시글";
-    document.querySelector(".modal-body").innerHTML = "처리가 완료되었습니다.";
+    document.querySelector(".modal-body").innerHTML = result;
   }
-
-  //   jQuery 사용 (부트스트랩 4.~ 이하 버전이라서)
   $("#registerModal").modal("show");
 }
 
-// 하단의 페이지번호 클릭 시
-// a 태그 기본 기능 중지
-// a 태그의 href값을 가져온 후 operForm의 page 요소의 value값으로 세팅
-// operForm 전송
-
+/*
+  하단의 페이지 번호 클릭 시 
+  a 태그 기본 기능 중지
+  a 태그 href 값 가져온후 operForm의 page요소의 value 값으로 세팅
+  actionForm 전송
+*/
 const pagination = document.querySelector(".pagination");
 const operForm = document.querySelector("#operForm");
 
 pagination.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // href값 가져오기
+  //href 값 가져오기
   let href = e.target.getAttribute("href");
 
-  // operForm안의 page value 값을 가져온 href로 세팅
+  //operForm 안의 page value 수정
   operForm.firstElementChild.value = href;
-  console.log(operForm);
+  //console.log(operForm);
 
   operForm.submit();
 });
 
-// 상단의 amount 수정시 operForm의 amount요소의 value값으로 세팅
-// operForm 전송
+// 상단의 amount 수정 시 operForm의 amount요소의 value 값으로 세팅
+// actionForm 전송
 const amount = document.querySelector("#amount");
 
 amount.addEventListener("change", (e) => {
-  // 선택한 amount값 가져오기
+  //선택한 amount 값 가져오기
   const val = e.target.value;
 
   const amount = document.querySelector("#operForm input:nth-child(2)");
@@ -56,9 +55,9 @@ amount.addEventListener("change", (e) => {
   operForm.submit();
 });
 
-// 제목 클릭 시 a태그 기능 중지
-// operForm의 action은 /board/read로 변경
-// operForm의 bno태그를 추가해서 operForm 전송
+// 제목 클릭 시 a 태그 기능 중지
+// operForm 의 action 은  /board/read 변경
+// operForm 의 bno 태그를 추가해서 actionForm 전송
 const moves = document.querySelectorAll(".move");
 
 moves.forEach((move) => {
@@ -66,20 +65,19 @@ moves.forEach((move) => {
     e.preventDefault();
 
     const href = e.target.getAttribute("href");
+
     const bno = "<input type='hidden' name='bno' value='" + href + "'>";
-
     operForm.insertAdjacentHTML("beforeend", bno);
-    operForm.action = "/board/read";
-    console.log(operForm);
 
+    operForm.action = "/board/read";
+    //console.log(operForm);
     operForm.submit();
   });
 });
 
-// 뒤로 가기 이벤트 감지? ==> 새로고침 하기
-// 뒤로가기하면서 글 클릭했을때 글번호가 계속해서 쌓이게되는걸 방지하려면 이걸 해야함
+//뒤로 가기 이벤트 감지? ==> 새로고침 하기
 window.onpageshow = function (event) {
-  // persisted == true : webpage가 로딩될 때 캐시에서 읽어왔다는 뜻
+  //  persisted == true : webpage 가 로딩될 때 캐시에서 읽어왔음
   if (event.persisted) {
     location.reload();
   }
@@ -89,9 +87,7 @@ window.onpageshow = function (event) {
 // type, keyword 입력 여부 확인
 // 입력이 안된 경우 : 경고창 보여주기
 // 입력이 다 된 경우 : 폼 submit
-
 const searchForm = document.querySelector("#searchForm");
-
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
 

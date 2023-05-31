@@ -1,8 +1,6 @@
 /**
  *
  */
-
-// uploadAjaxPost
 document.querySelector("#uploadFile").addEventListener("change", () => {
   //FormData 객체 생성
   const formData = new FormData();
@@ -43,9 +41,9 @@ function showUploadedFile(uploadResultArr) {
       //썸네일 이미지 경로 생성
       let fileCallPath = encodeURIComponent(item.uploadPath + "\\s_" + item.uuid + "_" + item.fileName);
 
-      // str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>";
+      //str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>";
 
-      // 썸네일 이미지 클릭 ==> 원본 이미지 보여주기
+      //썸네일 이미지 클릭 ==> 원본 이미지 보여주기
       let oriFileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
 
       str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
@@ -57,10 +55,7 @@ function showUploadedFile(uploadResultArr) {
         "<button type='button' class='btn btn-sm btn-circle btn-warning' data-file='" + fileCallPath + "' data-type='image'> X </button>";
       str += "</li>";
     } else {
-      // txt파일이라면
-      // str += "<li>" + item.fileName + "</li>";
-
-      // txt 파일 경로 생성
+      //txt 파일 경로 생성
       let fileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
 
       str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
@@ -79,16 +74,17 @@ function showUploadedFile(uploadResultArr) {
   document.querySelector(".uploadResult ul").insertAdjacentHTML("beforeend", str);
 }
 
-// x 클릭 시 alert() 창 띄우기
+// x 클릭 시 첨부파일 제거
+// register.jsp에서 사용하는 개념과(아예 DB에서도 삭제)
+// modify.jsp에서 사용하는 개념은 다름(화면에서만 삭제함, DB엔 아직 남아있음 - x눌러놓고 수정안할경우도 있어서)
 document.querySelector(".uploadResult").addEventListener("click", (e) => {
-  // 자식한테 이벤트가 일어나면 부모에게 전파 (이벤트 전파) 개념을 이용
+  // 자식한테 이벤트가 일어나면 부모에게 전파 ==> 이벤트 전파
   // 실제 이벤트가 발생한 대상 : 자식 ==> e.target
   // 이벤트를 감지한 부모 ==> e.currentTarget
-
-  // 1) 첨부 목록 정리
-  // 2) 서버폴더에 저장된 파일 제거
-  //    이미지 : 원본, 썸네일 이미지 제거
-  //    txt : 파일 제거
+  //  1) 화면에서 첨부 목록 정리
+  //  2) 서버 폴더에 저장된 파일 제거
+  //      이미지 : 원본, 썸네일 이미지 제거
+  //      txt : 파일 제거
 
   // data- 에 있는 값 가져오기
   // data-file, data-type
@@ -96,28 +92,39 @@ document.querySelector(".uploadResult").addEventListener("click", (e) => {
   const type = e.target.dataset.type;
   console.log(targetFile, type);
 
-  // x가 눌러진 li 가져오기
+  // x 가 눌러진 li 가져오기
   const li = e.target.closest("li");
 
-  // script에서 <form>태그 작성
-  const formData = new FormData();
-  formData.append("fileName", targetFile);
-  formData.append("type", type);
-  // const data = new URLSearchhParams(formData);
-
-  fetch("/deleteFile", {
-    method: "post",
-    body: formData,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("파일 제거 실패");
-      }
-      return response.text();
-    })
-    .then((data) => {
-      console.log(data);
+  if (path.match("modify")) {
+    // modify에서 요청 처리
+    if (confirm("정말로 파일을 삭제하시겠습니까?")) {
       li.remove();
+    }
+  } else {
+    // register에서 요청 처리
+
+    // script 에서 <form> 태그 작성
+    const formData = new FormData();
+    formData.append("fileName", targetFile);
+    formData.append("type", type);
+
+    // /deleteFile?fileName=2023/05/20/test.jpg&type=image
+    // const data = new URLSearchParams(formData);
+
+    fetch("/deleteFile", {
+      method: "post",
+      body: formData,
     })
-    .catch((error) => console.log(error));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("파일 제거 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        li.remove();
+      })
+      .catch((error) => console.log(error));
+  }
 });

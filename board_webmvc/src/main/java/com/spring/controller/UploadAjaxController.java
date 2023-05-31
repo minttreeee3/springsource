@@ -120,7 +120,6 @@ public class UploadAjaxController {
 			UUID uuid = UUID.randomUUID();
 			String fileName = uuid.toString() + "_" + multipartFile.getOriginalFilename();		
 			
-			// 원본 이미지
 			File saveFile = new File(uploadFullPath,fileName);	
 			
 			// 파일 한 개당 AttachFileDTO 생성
@@ -161,14 +160,10 @@ public class UploadAjaxController {
 	}
 	
 	
-	
-	// 파일이 저장되는건 내 컴퓨터 안이기 때문에
-	// 외부(웹)에서 보여주기 위해선 컨트롤러가 필요함
 	//파일 요청 시 파일 보내주기
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getFile(String fileName){
 		log.info("파일 요청 "+fileName);
-		
 		
 		File file = new File("c:\\upload\\"+fileName);
 		
@@ -185,81 +180,77 @@ public class UploadAjaxController {
 		return result;
 	}
 	
-	// HttpServletRequest 객체 : 클라이언트의 정보를 가져올 수 있음
-		@GetMapping(value="/download", produces= MediaType.APPLICATION_OCTET_STREAM_VALUE)
-		public ResponseEntity<Resource> downloadFile(String fileName, @RequestHeader("User-Agent") String userAgent) {
-			log.info("파일 다운로드 요청 "+fileName);
-			
-			// http://localhost:8080/download?fileName=2023%5C05%5C30%5Ca4dc76a7-8e84-4ebd-b5d3-b476166cf5ce_파일명.txt
-			Resource resource = new FileSystemResource("c:\\upload\\"+fileName);
-			
-			// uuid를 포함한 파일명
-			String oriFileName = resource.getFilename();
-			// uuid를 제거한 파일명
-			String splitUuid = oriFileName.substring(oriFileName.indexOf("_")+1);
-			
-			
-			if(!resource.exists()) {
-				return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
-			}
-			
-			HttpHeaders headers = new HttpHeaders();
-			
-			String downloadName = null;
-				try {
-					//브라우저가 ms계열인가 아닌가를 확인하는 코드 
-					// ms 계열 : Trident (IE11) 
-					if(userAgent.contains("Trident") || userAgent.contains("Edge")) {
-						// uuid를 포함한 파일명
-						//downloadName = URLEncoder.encode(resource.getFilename(), "utf-8").replaceAll("\\+", " ");
-						downloadName = URLEncoder.encode(splitUuid, "utf-8").replaceAll("\\+", " ");
-						
-					} else {
-						//downloadName = new String(resource.getFilename().getBytes("utf-8"), "ISO-8859-1");
-						downloadName = new String(splitUuid.getBytes("utf-8"), "ISO-8859-1");
-					}
-					
-					// 파일을 헤더에 덧붙이기
-					headers.add("Content-Disposition", "attachmment;filename="+downloadName);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+	// HttpServletRequest 객체 : 클라이언트 정보를 가져올 수 있음
+	@GetMapping(value="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<Resource> downloadFile(String fileName,@RequestHeader("User-Agent") String userAgent){
+		log.info("파일 다운로드 요청 "+fileName);
+		
+		// c:\\upload\\2023\05\30\4be2993f-a046-42ed-bc9c-aa4cd02c048e_cat1.jpg
+		Resource resource = new FileSystemResource("c:\\upload\\"+fileName);
+		
+		// uuid를 포함한 파일명 
+		String oriFileName = resource.getFilename();
+		// uuid 를 제거한 파일명
+		String splitUuid = oriFileName.substring(oriFileName.indexOf("_")+1);
+		
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
 		}
-	
-	
 		
-	@PostMapping("/deleteFile")
-	public ResponseEntity<String> deleteFile(String fileName, String type) {
-		log.info("파일 제거 요청 "+fileName+", type"+type);
+		HttpHeaders headers = new HttpHeaders();
 		
-		// 특수문자 인코딩이 일어남 => 경로에 있는 \ 가 %5c로... 
+		String downloadName = null;
 		try {
-			File file = new File("c:\\upload\\", URLDecoder.decode(fileName,"utf-8"));
+				//ms 계열 : Trident (IE 11)
+				if(userAgent.contains("Trident") || userAgent.contains("Edge")) {
+					// uuid 를 포함한 파일명
+					// downloadName = URLEncoder.encode(resource.getFilename(), "utf-8").replaceAll("\\+", " ");				
+					
+					downloadName = URLEncoder.encode(splitUuid, "utf-8").replaceAll("\\+", " ");
+				}else {
+					// downloadName = new String(resource.getFilename().getBytes("utf-8"), "ISO-8859-1");
+					
+					downloadName = new String(splitUuid.getBytes("utf-8"), "ISO-8859-1");
+				}
+				
+				//파일을 헤더에 붙이기
+				headers.add("Content-Disposition", "attachment;filename="+downloadName);
+		} catch (UnsupportedEncodingException e) {				
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+	}
+	
+	@PostMapping("/deleteFile")
+	public ResponseEntity<String> deleteFile(String fileName, String type){
+		log.info("파일 제거 요청 "+fileName+", type "+type);
+		// 특수문자 인코딩이 일어남 ==> 경로에 있는 \ 가 %5C 로 인코딩 됨
+		// 2023%5C05%5C30%5Cdd654659-e814-478e-b103-c3812efb375d_test.txt
+		// 2023%5C05%5C30%5Cs_a7627020-448f-4143-a986-ecfcd23d95b1_cat1.jpg, type image
+		
+		try {
+			File file = new File("c:\\upload\\", URLDecoder.decode(fileName, "utf-8"));
 			
-			// 이미지 : 원본, 썸네일 이미지 제거
-			// txt : 파일 제거
+//			이미지 : 원본, 썸네일 이미지 제거
+//			txt : 파일 제거
 			
-			file.delete(); // txt파일,썸네일파일 삭제
+			file.delete();  // txt 파일, 썸네일 삭제
 			
 			//원본 이미지 제거
 			if(type.equals("image")) {
-				//위에서 작성한 file객체에서 fileNmae추출 후 s_를 제거한 상태의 이름을 파일객체로 생성
+				// 위에서 작성한 file 객체에서 fileName 추출 후 s_를 제거한 상태의 이름을 파일 객체로 생성
 				String largeName = file.getAbsolutePath().replace("s_", "");
 				file = new File(largeName);
-				//delete작업
+				// delete 작업
 				file.delete();
-			}
-			
-		} catch (UnsupportedEncodingException e) {
+			}			
+		} catch (UnsupportedEncodingException e) {	
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);			
-		}
-				
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}		
 		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 	
-
 	
 	
 	

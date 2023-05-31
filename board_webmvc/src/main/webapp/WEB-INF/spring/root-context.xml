@@ -2,53 +2,59 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:cache="http://www.springframework.org/schema/cache"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
-		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
-		
-	<!-- service 어노테이션 활성화 -->
-	<context:component-scan base-package="com.spring.service" />
-		
+	<context:component-scan base-package="com.spring.service"/>
 	
-	<!-- dbcp : HicariCP -->
+	<!-- @Component 어노테이션 -->
+	<context:component-scan base-package="com.spring.schedule"/>
+	<!-- @Scheduled 어노테이션 -->
+	<task:annotation-driven/>
+	
+	<!-- dbcp - HikariCP -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="javadb"/>
-		<property name="password" value="12345"/>
+		<property name="driverClassName"   value="oracle.jdbc.OracleDriver"/>
+		<property name="jdbcUrl"   value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username"   value="javadb"/>
+		<property name="password"   value="12345"/>
 	</bean>
 	
 	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
+		<constructor-arg ref="hikariConfig"/>
 	</bean>
-
 	
 	<!-- mybatis 설정 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="ds" />
-	</bean>
-	<mybatis-spring:scan base-package="com.spring.mapper"/>
-	
-	
-	<!-- 비밀번호 암호화 객체 생성 -->
-	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-	
+		<property name="dataSource" ref="ds"/>		
+	</bean>	
+	<mybatis-spring:scan base-package="com.spring.mapper"/>		
+		
 	<!-- 스프링 트랜잭션 매니저 등록 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="ds" />
+		<property name="dataSource" ref="ds"/>
 	</bean>
 	
-	<!-- @Transactional 활성화 -->
-	<tx:annotation-driven/>
+	<!-- @Transactional 활성화  -->
+	<tx:annotation-driven/>	
 		
 </beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
