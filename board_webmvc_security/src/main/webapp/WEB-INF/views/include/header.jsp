@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -367,10 +368,24 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                
+                        
+                             <!-- 익명사용자라면 로그인 할 수 있도록 -->
+                                <security:authorize access="isAnonymous()">
+	                                <a class="dropdown-item" href="/member/login">
+	                                    <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+	                                    Login
+	                                </a>
+                                </security:authorize>
+                             <!-- 인증받은 상태라면 로그아웃 버튼이 뜨도록 -->
+                                <security:authorize access="isAuthenticated()">
+	                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+	                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+	                                    Logout
+	                                </a>
+                                </security:authorize>
+                                
+                                
                             </div>
                         </li>
 
