@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class ReplyController {
 	
 	
 	// http://localhost:8080/replies/new + POST + 입력데이터(json)
+	@PreAuthorize("isAuthenticated()")  // 인증받은(로그인한) 사람만 댓글 쓸 수 있게
 	@PostMapping("/new")
 	public ResponseEntity<String> create(@RequestBody ReplyDTO dto){
 		log.info("댓글 삽입 "+dto);
@@ -65,6 +67,7 @@ public class ReplyController {
 	
 	// http://localhost:8080/replies/rno + PUT + 수정데이터(json)
 	
+	@PreAuthorize("principal.username == #dto.replyer")
 	@PutMapping("/{rno}")
 	public ResponseEntity<String> modify(@RequestBody ReplyDTO dto){
 		log.info("댓글 수정 "+dto);
@@ -76,8 +79,9 @@ public class ReplyController {
 	}
 	
 	// http://localhost:8080/replies/rno + DELETE : 댓글 삭제
+	@PreAuthorize("principal.username == #dto.replyer")
 	@DeleteMapping("/{rno}")
-	public ResponseEntity<String> remove(@PathVariable("rno") int rno){
+	public ResponseEntity<String> remove(@PathVariable("rno") int rno, @RequestBody ReplyDTO dto){
 		log.info("댓글 삭제 "+rno);
 		
 		return reService.delete(rno)?

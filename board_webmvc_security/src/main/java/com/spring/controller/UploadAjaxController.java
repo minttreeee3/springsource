@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,7 +96,7 @@ public class UploadAjaxController {
 //		return new ResponseEntity<>(fileList, HttpStatus.OK);
 //	}
 	
-	
+	@PreAuthorize("isAuthenticated()") //로그인 사용자가 맞는지 확인
 	@PostMapping("/uploadAjax")
 	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 		log.info("upload 요청 ");
@@ -221,6 +222,7 @@ public class UploadAjaxController {
 		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("isAuthenticated()") //로그인 사용자가 맞는지 확인
 	@PostMapping("/deleteFile")
 	public ResponseEntity<String> deleteFile(String fileName, String type){
 		log.info("파일 제거 요청 "+fileName+", type "+type);
