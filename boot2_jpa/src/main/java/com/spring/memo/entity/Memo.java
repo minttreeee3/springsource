@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +20,7 @@ import lombok.ToString;
 @Entity // 클래스를 엔티티로 선언
 @SequenceGenerator(name="mem_seq_gen", sequenceName="mem_seq", allocationSize=1)
 @Builder
+// @Table(name="memos") // 클래스명으로 테이블 생성할 때 옵션 지정
 @AllArgsConstructor @NoArgsConstructor 
 @Setter @Getter @ToString
 public class Memo {
@@ -30,7 +34,8 @@ public class Memo {
 	@Id // pk생성
 	private long mno;
 	
-	@Column(length = 200, nullable = false)
+	//@CreationTimestamp // insert시 시간 자동저장
+	@Column(length = 200, nullable = false) 
 	private String memoText;
 
 }
