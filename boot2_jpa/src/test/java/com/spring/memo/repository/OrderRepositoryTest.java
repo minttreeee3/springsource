@@ -21,6 +21,8 @@ public class OrderRepositoryTest {
 	private MemberRepository memberRepository;
 	@Autowired
 	private ItemRepository itemRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	
 //	@Test
@@ -55,6 +57,8 @@ public class OrderRepositoryTest {
 										.updateTime(LocalDateTime.now())
 										.build();
 		
+		OrderItem newOrder = orderItemRepository.save(orderItem);
+		System.out.println(newOrder);
 		
 	}
 	
